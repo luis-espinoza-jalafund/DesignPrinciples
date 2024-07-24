@@ -1,4 +1,5 @@
 ﻿namespace LeastAstonishment;
+using System.Text.RegularExpressions;
 
 public class User
 {
@@ -6,13 +7,20 @@ public class User
   
   public string Email { get; set; }
   
-  public string Password { get; set; }
+  public string Password;
   
   public string Role { get; set; }
 
-  public User()
+  public User(string username, string email, string password)
   {
-    //...
+    if (!IsValidEmail(email)) 
+    {
+      throw new ArgumentException("Invalid email address.");
+    }
+
+    Username = username;
+    Email = email;
+    Password = password;
   }
 
   public void UpdatePassword(string newPassword)
@@ -24,4 +32,9 @@ public class User
 
     Password = newPassword;
   }
+
+  private bool IsValidEmail(string email)
+        {
+            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+        }
 }
